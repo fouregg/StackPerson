@@ -4,7 +4,7 @@
 using namespace std;
 
    
-
+//Конструктор по умолчанию
 Persona::Persona()
 {
     name = "";
@@ -12,7 +12,7 @@ Persona::Persona()
     age = 0;
     sex = true;
 }
-
+//Конструктор с параметрами(нужен для простых тестов)
 Persona::Persona(string name, string subname, bool sex, int age)
 {
     this->name = name;
@@ -55,7 +55,7 @@ void Persona::input()
         if (sex)
             cout << "Пол: Мужской";
         else
-            cout << "Пол: :Женский";
+            cout << "Пол: Женский";
         cout << "\tВозраст: " << age << endl;
     }
 
@@ -79,6 +79,7 @@ void Persona::input()
         return age;
     }
 
+    //Так как операция == для объектов не переопределена, то пишем метод сравнения
     bool Persona::equals(Persona another)
     {
         if (this->name == another.getName() && this->subname == another.getSubname() && this->sex == another.getSex() && this->age == another.age)

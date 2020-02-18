@@ -10,7 +10,7 @@ public:
 	StackPerson();
 	void addElement(StackPerson** last, Persona element);
 	void deleteElement(StackPerson** last, Persona element);
-	void changeElement(StackPerson** last, Persona newelement);
+	void changeElement(StackPerson** last, int number, Persona newelement);
 	void printElements(StackPerson** last);
 };
 

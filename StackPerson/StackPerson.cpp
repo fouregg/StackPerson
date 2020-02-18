@@ -2,7 +2,7 @@
 #include <iostream>
 
 
-
+//Констуктор по дефолту, чтобы не ругалась Studio
 StackPerson::StackPerson()
 {
 	
@@ -11,62 +11,72 @@ StackPerson::StackPerson()
 void StackPerson::addElement(StackPerson** top, Persona element)
 {
 	StackPerson* tmp = new StackPerson();
-	tmp->info = element;
-	if (top != NULL)
+	tmp->info = element;//Создаем пустой элемент и заполняем его инфо данными, которые добавляем в стэк
+	if (*top == NULL) //Если стэк пустой
 	{
-		tmp->next = *top;
-		*top = tmp;
+		*top = tmp;//Значит его вверх будет добавляемым элементом
 	}
 	else
 	{
-		*top = tmp;
+		tmp->next = *top; //Новый элемент ссылается на текущий вверх
+		*top = tmp; //вверх становится элементом добавленным
 	}
 }
 
 
 void StackPerson::deleteElement(StackPerson** top, Persona element)
 {
-	StackPerson* tmp = *top;
-	StackPerson* prev = NULL;
-	while (tmp != NULL) {
-		if (tmp->info.equals(element))
+	StackPerson* tmp = *top; 
+	StackPerson* prev = NULL;//Предыдущий элемент. Нужен, чтобы связать его с после удаленного
+	if (tmp == NULL)//Если вверх пустой, то и стэк пустой, удалять нельзя
+	{
+		std::cout << "Стэк пустой, нельзя удалять!" << std::endl;
+	}
+	while (tmp != NULL) {//Обходим стэк, пока не дойдем до пустого
+		if (tmp->info.equals(element)) //Если инфо текущего равно элементу, который удаляем
 		{
-			cout << "OU MAI!" << endl;
-			if (tmp->info.equals((*top)->info))
+			if (tmp==(*top)) //Если это вверх стэка
 			{
-				*top = tmp->next;
-				delete tmp;
+				*top = tmp->next; // Вверх списка теперь будет указатель элемента
+				delete tmp; //Очишаем вверх стэка
 			}
 			else
 			{
-				prev->next = tmp->next;
-				delete tmp;
-				
+				prev->next = tmp->next; //Предыдущий элемент ссылается на следующий, после удаления
+				delete tmp; //Очишаем элемент стэка
+				tmp->next = NULL;  //Не забываем про указатель, иначе ошибки
 			}
 		}
-		prev = tmp;
+		prev = tmp; //Если элемент не подходит под удаление, то просто говорим, что он предыдущий и двигаем текущий дальше
 		tmp = tmp->next;
 	}
-
-	if ((*top)->next != NULL) {
 		
-		*top = (*top)->next;
-		delete tmp;
-	}
-	else
-		std::cout << "Стэк пустой, нельзя удалять!" << std::endl;
 }
 
-void StackPerson::changeElement(StackPerson** top, Persona newelement)
+
+void StackPerson::changeElement(StackPerson** top, int number, Persona newelement)
 {
-	StackPerson* tmp = *top;
-	tmp->info=newelement;
+	StackPerson* tmp = *top; 
+	int count = 0;//Счетчик позиции
+	while (tmp != NULL) { //Обходим стэк, пока не дойдем до пустого
+		if (count == number) //Если количество обходов равно числу элемента, который нужно менять
+		{
+			tmp->info = newelement; // перезаписываем инфо элемента
+			break;//заканчиваем цикл
+		}
+		else
+		{
+			count++;
+			tmp->next = *top;// Двигаем список далее увеличивая count
+			*top = tmp;
+		}
+	}
 }
 
 void StackPerson::printElements(StackPerson** top)
 {
-	StackPerson* tmp = this;
-	while (tmp->next != NULL) 
+	StackPerson* tmp = *top;
+	while (tmp!= NULL) 
 	{
 		tmp->info.output();
 		tmp = tmp->next;
